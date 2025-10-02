@@ -1,95 +1,137 @@
-import Image from "next/image";
+"use client"
+
 import styles from "./page.module.css";
+import { use, useEffect, useState } from "react";
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+  const [fase, setFase] = useState("Foco");
+  const [tempoRestante, setTempoRestante] = useState(25 * 60);
+  const [ciclos, setCiclos] = useState(0);
+  const [rodando, setRodando] = useState(false);
+
+  const [tempoFoco, setTempoFoco] = useState(25 * 60);
+  const [tempoPausaCurta, setTempoPausaCurta] = useState(5 * 60);
+  const [tempoPausaLonga, setTempoPausaLonga] = useState(15 * 60);
+
+  const [modalAberto, setModalAberto] = useState(false)
+
+  function tocarSom(){
+    const audio = new Audio("/sons/Pop.mp3");
+    audio.play();
+  }
+
+  function trocarFase() {
+    tocarSom();
+
+    if (fase === "Foco") {
+      if (ciclos === 3) {
+        setFase("Pausa longa")
+        setTempoRestante(tempoPausaLonga)
+        setCiclos(0)
+      }
+      else {
+        setFase("Pausa curta")
+        setTempoRestante(tempoPausaCurta)
+        setCiclos(ciclos + 1)
+      }
+    }
+    else if (fase === "Pausa curta") {
+      setFase("Foco")
+      setTempoRestante(tempoFoco)
+    }
+    else if (fase === "Pausa longa") {
+      setFase("Foco")
+      setTempoRestante(tempoFoco)
+    }
+  
+  }
+
+  function formatarTempo(segundos) {
+    const m = Math.floor(segundos / 60)
+    const s = segundos % 60;
+    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+  }
+
+  useEffect(() => {
+    let intervalo
+
+    if (rodando) {
+      intervalo = setInterval(() => {
+        setTempoRestante((prev) => {
+          if (prev > 0){
+            return prev - 1;
+          } else {
+            trocarFase();
+            return prev;
+          }
+        });
+      }, 1000);
+    }
+
+    return () => clearInterval(intervalo)
+  }, [rodando, fase]);
+  
+  return (
+    <div className={styles.home}>
+
+      <div className={styles.timer}>
+        <h1> {formatarTempo(tempoRestante)} </h1>
+        <h2>Fase atual: {fase} </h2>
+        <h2>Ciclos: {ciclos} </h2>
+      </div>
+
+      <div className={styles.botoes}>
+        <button onClick={() => setRodando(true)}>Iniciar</button>
+        <button onClick={() => setRodando(false)}>Pausar</button>
+        <button onClick={() => {
+          setRodando(false)
+          setFase("Foco")
+          setTempoRestante(25 * 60)
+          setCiclos(0)  
+        }}>Reiniciar</button>
+        <button onClick={() => setModalAberto(true)}>Configurações</button>
+        <button onClick={trocarFase}>Trocar Fase</button>
+      </div>
+
+      {modalAberto && (
+        <div className={styles.modalFundo}>
+          <div className={styles.modalConteudo}>
+            <h2>Configurações do Pomodoro</h2>
+
+            <label>
+              Foco (min):
+              <input 
+                type="number" 
+                value={tempoFoco / 60} 
+                onChange={(e) => setTempoFoco(e.target.value * 60)} 
+              />
+            </label>
+
+            <label>
+              Pausa Curta (min):
+              <input 
+                type="number" 
+                value={tempoPausaCurta / 60} 
+                onChange={(e) => setTempoPausaCurta(e.target.value * 60)} 
+              />
+            </label>
+
+            <label>
+              Pausa Longa (min):
+              <input 
+                type="number" 
+                value={tempoPausaLonga / 60} 
+                onChange={(e) => setTempoPausaLonga(e.target.value * 60)} 
+              />
+            </label>
+
+            <button onClick={() => setModalAberto(false)}>Fechar</button>
+          </div>
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      )}
+
+
     </div>
   );
 }
