@@ -16,6 +16,8 @@ export default function Home() {
 
   const [modalAberto, setModalAberto] = useState(false)
 
+  const [somEscolhido, setSomEscolhido] = useState("");
+
   function tocarSom(){
     const audio = new Audio("/sons/Pop.mp3");
     audio.play();
@@ -71,6 +73,24 @@ export default function Home() {
 
     return () => clearInterval(intervalo)
   }, [rodando, fase]);
+
+  // Mudanças automáticas de fase
+  useEffect(() => {
+    if (tempoRestante === 0) {
+      trocarFase()
+    }
+  }, [tempoRestante]);
+
+  // Efeito para tocar som
+  useEffect(() => {
+    if (somEscolhido) {
+      const audio = new Audio(somEscolhido);
+      audio.loop = true; // Define o áudio para repetir
+      audio.play();
+
+      return () => audio.pause(); //Pausa o áudio ao trocar
+    }
+  }, [somEscolhido]);
   
   return (
     <div className={styles.home}>
