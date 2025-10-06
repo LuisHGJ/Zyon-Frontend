@@ -5,17 +5,29 @@ import { use, useEffect, useState } from "react";
 
 export default function Home() {
 
+  // Estados do Pomodoro
+  const [faseIndex, setFaseIndex] = useState(0);
+  const [cicloAtual, setCicloAtual] = useState(0);
   const [fase, setFase] = useState("Foco");
   const [tempoRestante, setTempoRestante] = useState(25 * 60);
-  const [ciclos, setCiclos] = useState(0);
   const [rodando, setRodando] = useState(false);
 
+  // Configurações do Pomodoro
   const [tempoFoco, setTempoFoco] = useState(25 * 60);
   const [tempoPausaCurta, setTempoPausaCurta] = useState(5 * 60);
   const [tempoPausaLonga, setTempoPausaLonga] = useState(15 * 60);
 
-  const [modalAberto, setModalAberto] = useState(false)
+  // Ciclos
+  const [ciclosTotal, setCiclosTotal ]= useState(2); 
 
+  // Modais
+  const [modalAberto, setModalAberto] = useState(false);
+  const [modalCiclosConcluidos, setModalCiclosConcluidos] = useState(false);
+
+  // Ciclo completo
+  const fasesDoCiclo = ["Foco", "Pausa curta", "Foco", "Pausa curta", "Foco", "Pausa longa"];
+
+  // ! CONTINUAR A PARTE DO SOM
   const [somEscolhido, setSomEscolhido] = useState("");
 
   function tocarSom(){
@@ -24,30 +36,40 @@ export default function Home() {
   }
 
   function trocarFase() {
-    tocarSom();
+    const proximaFaseIndex = faseIndex + 1;
 
-    if (fase === "Foco") {
-      if (ciclos === 3) {
-        setFase("Pausa longa")
-        setTempoRestante(tempoPausaLonga)
-        setCiclos(0)
+    if (proximaFaseIndex < fasesDoCiclo.length) {
+      setFaseIndex(proximaFaseIndex);
+      setFase(fasesDoCiclo[proximaFaseIndex]);
+      setTempoRestante(tempoDaFase(fasesDoCiclo[proximaFaseIndex]))
+    } else {
+      const proximoCiclo = cicloAtual + 1;
+      if (proximoCiclo > ciclosTotal) {
+        setRodando(false);
+        setModalCiclosConcluidos(true);
+        setFaseIndex(0);
+        setCicloAtual(1);
+        setFase(fasesDoCiclo[0]);
+        setTempoRestante(tempoDaFase(fasesDoCiclo[0]));
+      } else {
+        setCicloAtual(proximoCiclo);
+        setFaseIndex(0);
+        setFase(fasesDoCiclo[0]);
+        setTempoRestante(tempoDaFase(fasesDoCiclo[0]));
       }
-      else {
-        setFase("Pausa curta")
-        setTempoRestante(tempoPausaCurta)
-        setCiclos(ciclos + 1)
-      }
     }
-    else if (fase === "Pausa curta") {
-      setFase("Foco")
-      setTempoRestante(tempoFoco)
-    }
-    else if (fase === "Pausa longa") {
-      setFase("Foco")
-      setTempoRestante(tempoFoco)
-    }
-  
+    tocarSom()
   }
+
+  useEffect(() => {
+    if (tempoRestante < 0) {
+      trocarFase();
+    }
+  }, [tempoRestante]);
+
+  useEffect(() => {
+    setTempoRestante(tempoDaFase(fase));
+}, [tempoFoco, tempoPausaCurta, tempoPausaLonga, fase]);
 
   function formatarTempo(segundos) {
     const m = Math.floor(segundos / 60)
@@ -56,39 +78,30 @@ export default function Home() {
   }
 
   useEffect(() => {
-    let intervalo
+    if (!rodando) return;
 
-    if (rodando) {
-      intervalo = setInterval(() => {
-        setTempoRestante((prev) => {
-          if (prev > 0){
-            return prev - 1;
-          } else {
-            trocarFase();
-            return prev;
-          }
-        });
-      }, 1000);
-    }
+    const intervalo = setInterval(() => {
+      setTempoRestante(prev => prev - 1);
+    }, 1000);
 
-    return () => clearInterval(intervalo)
-  }, [rodando, fase]);
+    return () => clearInterval(intervalo);
+  }, [rodando]);
 
-  // Mudanças automáticas de fase
-  useEffect(() => {
-    if (tempoRestante === 0) {
-      trocarFase()
-    }
-  }, [tempoRestante]);
+  function tempoDaFase(fase) {
+    if (fase === "Foco") return tempoFoco;
+    else if (fase === "Pausa curta") return tempoPausaCurta;
+    else if (fase === "Pausa longa") return tempoPausaLonga;
+    return 0;
+  }
 
   // Efeito para tocar som
   useEffect(() => {
     if (somEscolhido) {
       const audio = new Audio(somEscolhido);
-      audio.loop = true; // Define o áudio para repetir
+      audio.loop = true;
       audio.play();
 
-      return () => audio.pause(); //Pausa o áudio ao trocar
+      return () => audio.pause();
     }
   }, [somEscolhido]);
   
@@ -98,20 +111,21 @@ export default function Home() {
       <div className={styles.timer}>
         <h1> {formatarTempo(tempoRestante)} </h1>
         <h2>Fase atual: {fase} </h2>
-        <h2>Ciclos: {ciclos} </h2>
+        <h2>Ciclos: {cicloAtual} / {ciclosTotal} </h2>
       </div>
 
       <div className={styles.botoes}>
-        <button onClick={() => setRodando(true)}>Iniciar</button>
+        <button onClick={() => {setRodando(true)}}>Iniciar</button>
         <button onClick={() => setRodando(false)}>Pausar</button>
         <button onClick={() => {
           setRodando(false)
-          setFase("Foco")
-          setTempoRestante(25 * 60)
-          setCiclos(0)  
+          setCicloAtual(1)
+          setFaseIndex(0)
+          setFase(fasesDoCiclo[0])
+          setTempoRestante(tempoDaFase(fasesDoCiclo[0]))
         }}>Reiniciar</button>
         <button onClick={() => setModalAberto(true)}>Configurações</button>
-        <button onClick={trocarFase}>Trocar Fase</button>
+        <button onClick={() => trocarFase()}>Trocar Fase</button>
       </div>
 
       {modalAberto && (
@@ -146,11 +160,27 @@ export default function Home() {
               />
             </label>
 
-            <button onClick={() => setModalAberto(false)}>Fechar</button>
+            <label>
+              Quantidade de ciclos:
+              <input
+                type="number"
+                min="1"
+                value={ciclosTotal}
+                onChange={(e) => setCiclosTotal(Number(e.target.value))}
+              />
+            </label>
+            <button onClick={() => {setModalAberto(false)}}>Fechar</button>
           </div>
         </div>
       )}
-
+      {modalCiclosConcluidos && (
+        <div className={styles.modalFundo}>
+          <div className={styles.modalConteudo}>
+            <h2>Parabéns! Você concluiu todos os ciclos!</h2>
+            <button onClick={() => setModalCiclosConcluidos(false)}>Fechar</button>
+          </div>
+        </div>
+      )}
 
     </div>
   );
