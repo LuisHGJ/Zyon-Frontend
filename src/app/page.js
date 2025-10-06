@@ -2,6 +2,7 @@
 
 import styles from "./page.module.css";
 import { use, useEffect, useState } from "react";
+import { useRef } from "react";
 
 export default function Home() {
 
@@ -24,11 +25,34 @@ export default function Home() {
   const [modalAberto, setModalAberto] = useState(false);
   const [modalCiclosConcluidos, setModalCiclosConcluidos] = useState(false);
 
+  // Som ambiente
+  const [somEscolhido, setSomEscolhido] = useState("");
+  const audioRef = useRef(null);
+
+  // Lista de sons disponíveis
+  const sonsDisponiveis = [
+    { nome: "Chuva", caminho: "/sons/rain.mp3" },
+    { nome: "Passáros", caminho: "/sons/birds.mp3" },
+    { nome: "Noite", caminho: "/sons/night-ambience.mp3" },
+    { nome: "Rua", caminho: "/sons/street-ambience-traffic.mp3" },
+    { nome: "Floresta", caminho: "/sons/forest-ambience.mp3" },
+  ]
+
   // Ciclo completo
   const fasesDoCiclo = ["Foco", "Pausa curta", "Foco", "Pausa curta", "Foco", "Pausa longa"];
 
-  // ! CONTINUAR A PARTE DO SOM
-  const [somEscolhido, setSomEscolhido] = useState("");
+  function tempoDaFase(fase) {
+    if (fase === "Foco") return tempoFoco;
+    else if (fase === "Pausa curta") return tempoPausaCurta;
+    else if (fase === "Pausa longa") return tempoPausaLonga;
+    return 0;
+  }
+
+  function formatarTempo(segundos) {
+    const m = Math.floor(segundos / 60)
+    const s = segundos % 60;
+    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+  }
 
   function tocarSom(){
     const audio = new Audio("/sons/Pop.mp3");
@@ -61,22 +85,12 @@ export default function Home() {
     tocarSom()
   }
 
-  useEffect(() => {
-    if (tempoRestante < 0) {
-      trocarFase();
-    }
-  }, [tempoRestante]);
-
+  // Atualiza automaticamente o tempo quando muda a fase ou os tempos
   useEffect(() => {
     setTempoRestante(tempoDaFase(fase));
-}, [tempoFoco, tempoPausaCurta, tempoPausaLonga, fase]);
+  }, [tempoFoco, tempoPausaCurta, tempoPausaLonga, fase]);
 
-  function formatarTempo(segundos) {
-    const m = Math.floor(segundos / 60)
-    const s = segundos % 60;
-    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-  }
-
+  // Contagem regressiva
   useEffect(() => {
     if (!rodando) return;
 
@@ -87,23 +101,50 @@ export default function Home() {
     return () => clearInterval(intervalo);
   }, [rodando]);
 
-  function tempoDaFase(fase) {
-    if (fase === "Foco") return tempoFoco;
-    else if (fase === "Pausa curta") return tempoPausaCurta;
-    else if (fase === "Pausa longa") return tempoPausaLonga;
-    return 0;
-  }
-
-  // Efeito para tocar som
+  // Trocar de fase quando o tempo acabar
   useEffect(() => {
-    if (somEscolhido) {
-      const audio = new Audio(somEscolhido);
-      audio.loop = true;
-      audio.play();
-
-      return () => audio.pause();
+    if (tempoRestante < 0) {
+      trocarFase();
     }
-  }, [somEscolhido]);
+  }, [tempoRestante]);
+
+  //Controle do som ambiente
+  useEffect(() => {
+    if (!somEscolhido) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        audioRef.current = null;
+      }
+      return;
+    }
+
+    const newSrc = new URL(somEscolhido, window.location.href).href;
+
+    if (!audioRef.current || audioRef.current.src !== newSrc) {
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
+        audioRef.current = new Audio(newSrc);
+        audioRef.current.loop = true;
+    }
+
+    if (rodando) {
+      audioRef.current.play().catch(err => 
+        console.warn("Erro ao tocar o áudio:", err)
+      );
+    } else {
+      audioRef.current.pause();
+    }
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, [somEscolhido, rodando]);
+
   
   return (
     <div className={styles.home}>
@@ -126,6 +167,21 @@ export default function Home() {
         }}>Reiniciar</button>
         <button onClick={() => setModalAberto(true)}>Configurações</button>
         <button onClick={() => trocarFase()}>Trocar Fase</button>
+      </div>
+
+      <div className={styles.seletorSom}>
+        <label>
+          Som ambiente:
+          <select 
+            value={somEscolhido}
+            onChange={(e) => setSomEscolhido(e.target.value)}
+          >
+            <option value="">Nenhum</option>
+            {sonsDisponiveis.map((som) => (
+              <option key={som.caminho} value={som.caminho}>{som.nome}</option>
+            ))}
+          </select>
+        </label>
       </div>
 
       {modalAberto && (
