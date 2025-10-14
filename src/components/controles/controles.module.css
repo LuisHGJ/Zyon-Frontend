@@ -1,0 +1,16 @@
+.botoesPomodoro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.btPlay {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.btPlay:hover {
+    transform: scale(1.1);
+}

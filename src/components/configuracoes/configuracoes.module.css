@@ -1,0 +1,61 @@
+.main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.botoesPomodoro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    gap: 15px;
+    border: 2px solid #F2A849;  
+    border-radius: 10px;
+    width: 150px;
+    height: 25px;
+    padding: 8px 76px;
+    background-color: rgba(240, 248, 255, 0.123);
+}
+
+.btPlay {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.btPlay:hover {
+    transform: scale(1.1);
+}
+
+.modalFundo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.modalConteudo {
+    background-color: #3A0155;
+    color: aliceblue;
+    padding: 2rem;
+    border-radius: 8px;
+    min-width: 300px;
+}
+  
+.modalConteudo label {
+    display: block;
+    margin-bottom: 1rem;
+}
+  
+.modalConteudo input {
+    width: 100%;
+    padding: 0.3rem;
+    margin-top: 0.2rem;
+}
