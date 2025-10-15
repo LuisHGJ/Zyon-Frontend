@@ -1,0 +1,141 @@
+.calendarioContainer {
+  display: flex;
+  height: 300px;
+  width: 450px !important;
+  font-size: 9px;
+  padding-left: 20px;
+  background-color: aliceblue;
+  color: black;
+}
+
+.calendarioContainer :global(.fc) {
+  margin-top: 20px;
+  table-layout: fixed !important; 
+  width: 96% !important;
+}
+  
+.calendarioContainer :global(.fc-toolbar) {
+  display: flex !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.calendarioContainer :global(.fc-toolbar-title) {
+  font-size: 0.9rem !important;
+  margin-top: 10px;
+  font-weight: 300;
+  white-space: nowrap !important; 
+  color: #3A0155;
+  flex: 1 !important; 
+  text-align: center !important;
+  overflow: hidden !important;
+}
+  
+.calendarioContainer :global(.fc .fc-button) {
+  font-size: 0.8rem !important;
+  margin-top: 10px;
+  margin-left: 5px;
+  padding: 4px 8px 4px !important;
+}
+
+.calendarioContainer :global(.fc-today-button) {
+  font-size: 0.8rem !important;
+  margin-top: 10px;
+  margin-left: 20px !important;
+  padding: 4px 8px 4px !important;
+}
+  
+.calendarioContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+  width: 450px;
+  background-color: aliceblue;
+  color: black;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-direction: column;
+}
+  
+.modalFundo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+  
+.modalConteudo {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  width: 320px;
+  color: #3A0155;
+  text-align: left;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+  
+.modalConteudo h2 {
+  text-align: center;
+  color: #3A0155;
+  margin-bottom: 15px;
+}
+  
+.modalConteudo p {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 6px 0;
+  font-size: 1rem;
+}
+  
+.botoesModal {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+  
+.btEditar {
+  background: #3A0155;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+  
+.btExcluir {
+  background: #d9534f;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+  
+.btFechar {
+  background: #aaa;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+ 
+.calendarioContainer :global(.fc-daygrid-day) {
+  cursor: pointer !important;
+}
+
+.calendarioContainer :global(.fc-event) {
+  cursor: pointer !important;
+}
+
+.btEditar:hover { background: #5b1f85; }
+.btExcluir:hover { background: #c9302c; }
+.btFechar:hover { background: #888; }
+ 

@@ -3,6 +3,9 @@ import configsIcon from "/public/icones/configsIcon.png";
 import somIcon from "/public/icones/somIcon.png";
 import userIcon from "/public/icones/userIcon.png";
 import addUserIcon from "/public/icones/addUserIcon.png";
+import calendarioIcon from "/public/icones/calendarioIcon.png";
+
+import Calendario from "@/components/calendario/calendario";
 
 import Image from "next/image";
 import { useState, useRef } from "react";
@@ -14,8 +17,10 @@ export default function Configuracoes({
   ciclosTotal, setCiclosTotal,
 }) {
   const [somEscolhido, setSomEscolhido] = useState("");
+
   const [modalAbertoConfig, setModalAbertoConfig] = useState(false);
   const [modalAbertoSons, setModalAbertoSons] = useState(false);
+  const [modalAbertoCalendario, setModalAbertoCalendario] = useState(false);
 
   const audioRef = useRef(null);
 
@@ -73,6 +78,15 @@ export default function Configuracoes({
           width={50}
           height={50}
           onClick={() => setModalAbertoSons(true)}
+        />
+
+        <Image
+          src={calendarioIcon}
+          alt="calendarioIcon"
+          className={styles.btPlay}
+          width={50}
+          height={50}
+          onClick={() => setModalAbertoCalendario(true)}
         />
 
         <Image
@@ -164,6 +178,17 @@ export default function Configuracoes({
                 <button onClick={() => setModalAbertoSons(false)}>Fechar</button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {modalAbertoCalendario && (
+        <div className={styles.modalFundo}>
+          <div className={styles.modalConteudo}>
+
+            <Calendario/>
+
+            <button onClick={() => setModalAbertoCalendario(false)}>Fechar</button>
           </div>
         </div>
       )}
