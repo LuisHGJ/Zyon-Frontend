@@ -1,8 +1,10 @@
 "use client"
 
+import { useEffect, useState } from "react";
+
 import styles from "./page.module.css";
 
-import { useEffect, useState } from "react";
+import SidebarTasks from "@/components/sidebarTasks/sideBarTasks";
 import TimerBox from "@/components/TimerBox/timerBox";
 import Configuracoes from "@/components/configuracoes/configuracoes";
 
@@ -38,6 +40,7 @@ export default function Home() {
       rodando={rodando}
     />
 
+    <SidebarTasks/>
     </div>
   );
 }

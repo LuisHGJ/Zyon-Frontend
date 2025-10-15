@@ -18,7 +18,7 @@
     width: 300px;
     height: 350px;
     padding: 10px 1px;
-    background-color: rgba(240, 248, 255, 0.123);
+    background-color: rgba(240, 248, 255, 0.027);
 }
 
 .ciclo {
@@ -36,7 +36,7 @@
     color: #3A0155;
     font-size: 25px;
 
-    margin-top: 34px;
+    margin-top: 20px;
     margin-right: 18px;
 
     width: 150px;        
@@ -55,7 +55,7 @@
 
 .fase {
     color: #F2A849;
-    font-size: 15px;
+    font-size: 10px;
 }
 
 .modalFundo {
