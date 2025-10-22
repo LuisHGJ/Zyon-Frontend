@@ -3,6 +3,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    font-size: 12px;
 }
 
 .botoesPomodoro {
@@ -35,27 +36,228 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
     display: flex;
     justify-content: center;
     align-items: center;
-}
+    z-index: 100;
+    animation: aparecerFundo 0.3s ease-in-out;
+  }
   
-.modalConteudo {
-    background-color: #3A0155;
-    color: aliceblue;
-    padding: 2rem;
-    border-radius: 8px;
-    min-width: 300px;
-}
+  @keyframes aparecerFundo {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
   
-.modalConteudo label {
-    display: block;
+  .modalConteudo {
+    background: rgba(58, 1, 85, 0.9);
+    box-shadow: 0 0 20px rgba(242, 168, 73, 0.3);
+    color: #fff;
+    padding: 1rem 2.5rem;
+    border-radius: 16px;
+    width: 350px;
+    font-family: "Poppins", sans-serif;
+    animation: aparecerModal 0.4s ease-in-out;
+    border: 1px solid rgba(242, 168, 73, 0.3);
+  }
+  
+  @keyframes aparecerModal {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .modalConteudo h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #F2A849;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  
+  .modalConteudo label {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 1rem;
-}
+    font-size: 14px;
+    color: #fff;
+  }
   
-.modalConteudo input {
+  .modalConteudo input {
+    margin-top: 0.4rem;
+    padding: 0.4rem 0.6rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+  
+  .modalConteudo input:focus {
+    background-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 2px #F2A849;
+  }
+  
+  .modalConteudo button {
+    background-color: #F2A849;
+    border: none;
+    color: #1a1a1a;
+    padding: 10px 20px;
     width: 100%;
-    padding: 0.3rem;
-    margin-top: 0.2rem;
-}
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.8rem;
+  }
+  
+  .modalConteudo button:hover {
+    background-color: #ffb850;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(242, 168, 73, 0.4);
+  }
+  .seletorSom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .seletorSom label {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 100%;
+    font-size: 14px;
+  }
+  
+  .seletorSom select {
+    margin-top: 0.6rem;
+    padding: 0.6rem 2.5rem 0.6rem 0.8rem;
+    border-radius: 8px;
+    border: 1px solid rgba(242, 168, 73, 0.4);
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: "Poppins", sans-serif;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23F2A849' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path d='M5.516 7.548l4.484 4.484 4.484-4.484L15.516 9l-5 5-5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 14px;
+  }
+  
+  .seletorSom select:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: #F2A849;
+  }
+  
+  .seletorSom select:focus {
+    border-color: #F2A849;
+    box-shadow: 0 0 0 2px rgba(242, 168, 73, 0.4);
+  }
+
+  .seletorSom select option {
+    background-color: #3A0155;
+    color: #fff;
+  }
+  
+  .seletorSom div {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .seletorSom button {
+    flex: 1;
+    background-color: #F2A849;
+    border: none;
+    color: #1a1a1a;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .seletorSom button:hover {
+    background-color: #ffb850;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(242, 168, 73, 0.4);
+  }
+
+  .modalFundoCalendario {
+    position: fixed;
+    top: 0px;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    animation: aparecerFundo 0.3s ease;
+  }
+  
+  .modalConteudoCalendario {
+    background: rgba(58, 1, 85, 0.9);
+    color: #fff;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 0 20px rgba(242, 168, 73, 0.4);
+    display: flex;
+    width: 500px;
+    height: 400px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    animation: surgirModal 0.3s ease;
+  }
+  
+  .modalConteudoCalendario button {
+    background-color: #F2A849;
+    border: none;
+    color: black;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .modalConteudoCalendario button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 10px rgba(242, 168, 73, 0.6);
+  }
+  
+  /* Animações */
+  @keyframes aparecerFundo {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes surgirModal {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }

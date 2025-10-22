@@ -3,7 +3,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { useState, useEffect } from "react";
 import styles from "./calendario.module.css";
-import { getTasks, deleteTask, updateTask, createTask } from "@/services/api";
+import { getTasks, deleteTask, updateTask, createTask } from "@/services/apiTasks";
 
 export default function Calendario() {
   const [tasks, setTasks] = useState([]);

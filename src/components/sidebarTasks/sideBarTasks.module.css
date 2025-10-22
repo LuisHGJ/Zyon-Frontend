@@ -1,71 +1,211 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 .main {
-    font-family: Arial, Helvetica, sans-serif !important;
-    color: white;
+  font-family: "Segoe UI", Arial, sans-serif !important;
+  color: white;
 }
 
+/* ==== SIDEBAR ==== */
+.sidebar {
+  position: fixed;
+  right: -310px;
+  top: 0;
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(180deg, #3A0155 0%, #220030 100%);
+  padding: 16px;
+  transition: right 0.35s ease-in-out;
+  overflow-y: auto;
+  z-index: 1000;
+  border-left: 4px solid #F2A849;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.sidebar.aberta {
+  right: 0;
+}
+
+.toggleButton {
+  position: fixed;
+  top: 18px;
+  right: 12px;
+  z-index: 1100;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.toggleButton:hover {
+  transform: scale(1.15);
+}
+
+/* ==== TÍTULO E BOTÕES ==== */
 .title {
-    font-family: "Press Start 2P", system-ui !important;
-    color: #F2A849;
+  font-family: "Press Start 2P", system-ui !important;
+  color: #F2A849;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 16px;
+  text-shadow: 0 0 6px rgba(242, 168, 73, 0.6);
 }
 
-.sidebar {    
-    position: fixed;
-    right: -300px;
-    top: 0;
-    width: 270px;
-    height: 100%;
-    background-color: #3A0155;
-    padding: 10px;
-    transition: right 0.3s; 
-    overflow-y: auto;
-    z-index: 1000;
-    border-left: #190323 7px solid;
-  }
-  
-  .sidebar.aberta {
-    right: 0;
-  }
-  
-  .toggleButton {
-    position: fixed;
-    top: 20px;
-    right: 10px;
-    z-index: 1100;
-  }  
-  
-  .taskList {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .taskList li {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    font-size: 13px;
-  }
-  
-  .botoes button {
-    margin-left: 5px;
-  }
-  
-  .modalFundo {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .modalConteudo {
-    display: flex;
-    flex-direction: column;
-    background-color: #3A0155;
-    padding: 20px;
-    border-radius: 8px;
-    width: 300px;
-  }
-  
+.sidebar button {
+  width: 100%;
+  background: #F2A849;
+  color: #3A0155;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: all 0.25s ease;
+  margin-bottom: 14px;
+}
+
+.sidebar button:hover {
+  background: #ffcc60;
+  transform: scale(1.03);
+}
+
+/* ==== LISTA DE TASKS ==== */
+.taskList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.taskList li {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(242, 168, 73, 0.2);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 0.85rem;
+  color: #f5f5f5;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.taskList li:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.taskList span {
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: #F2A849;
+  margin-bottom: 6px;
+}
+
+.botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.botoes button {
+  background: #3A0155;
+  color: #F2A849;
+  border: 1px solid #F2A849;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: 0.25s;
+}
+
+.botoes button:hover {
+  background: #F2A849;
+  color: #3A0155;
+}
+
+/* ==== MODAIS ==== */
+.modalFundo {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1200;
+}
+
+.modalConteudo {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(145deg, #3A0155 0%, #4d0a70 100%);
+  color: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  animation: aparecerModal 0.25s ease;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+@keyframes aparecerModal {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modalConteudo h2 {
+  text-align: center;
+  color: #F2A849;
+  margin-bottom: 16px;
+  font-size: 1.2rem;
+  font-family: "Press Start 2P", system-ui !important;
+}
+
+.modalConteudo label {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #f0eaff;
+}
+
+.modalConteudo input,
+.modalConteudo textarea {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 5px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 8px;
+  background-color: rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 0.9rem;
+  transition: 0.2s;
+}
+
+.modalConteudo input:focus,
+.modalConteudo textarea:focus {
+  outline: none;
+  border-color: #F2A849;
+  box-shadow: 0 0 6px rgba(242,168,73,0.5);
+}
+
+.modalConteudo textarea {
+  resize: none;
+  min-height: 70px;
+}
+
+.modalConteudo button {
+  background-color: #F2A849;
+  color: #3A0155;
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  margin-top: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: 0.25s;
+}
+
+.modalConteudo button:hover {
+  transform: scale(1.05);
+  background-color: #ffd066;
+}

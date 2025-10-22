@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from "./sideBarTasks.module.css";
-import { getTasks, deleteTask, updateTask, createTask } from "@/services/api";
+import { getTasks, deleteTask, updateTask, createTask } from "@/services/apiTasks";
 
 import menuIcon from "/public/icones/menuIcon.png";
 

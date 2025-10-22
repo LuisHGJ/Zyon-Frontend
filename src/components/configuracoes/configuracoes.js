@@ -183,8 +183,8 @@ export default function Configuracoes({
       )}
 
       {modalAbertoCalendario && (
-        <div className={styles.modalFundo}>
-          <div className={styles.modalConteudo}>
+        <div className={styles.modalFundoCalendario}>
+          <div className={styles.modalConteudoCalendario}>
 
             <Calendario/>
 
