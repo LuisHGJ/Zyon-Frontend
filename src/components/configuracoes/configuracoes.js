@@ -8,6 +8,7 @@ import calendarioIcon from "/public/icones/calendarioIcon.png";
 import Calendario from "@/components/calendario/calendario";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useRef } from "react";
 
 export default function Configuracoes({
@@ -89,13 +90,15 @@ export default function Configuracoes({
           onClick={() => setModalAbertoCalendario(true)}
         />
 
-        <Image
-          src={userIcon}
-          alt="userIcon"
-          className={styles.btPlay}
-          width={50}
-          height={50}
-        />
+        <Link href="/cadastro">
+          <Image
+            src={userIcon}
+            alt="userIcon"
+            className={styles.btPlay}
+            width={50}
+            height={50}
+          />
+        </Link>
 
         <Image
           src={addUserIcon}
