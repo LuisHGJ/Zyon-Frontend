@@ -90,7 +90,7 @@ export default function Configuracoes({
           onClick={() => setModalAbertoCalendario(true)}
         />
 
-        <Link href="/cadastro">
+        <Link href="/opcaoUser">
           <Image
             src={userIcon}
             alt="userIcon"

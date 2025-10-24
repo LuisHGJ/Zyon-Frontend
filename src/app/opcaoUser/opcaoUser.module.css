@@ -1,0 +1,82 @@
+.containerUser {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  font-family: "Arial", sans-serif;
+
+  background-image: url("/imagens/background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;  
+  margin: 0;
+  padding: 0;
+}
+
+.card {
+  background: rgba(39, 1, 50, 0.769);
+  backdrop-filter: blur(5px);
+  padding: 15px 25px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  width: 370px;
+  max-width: 90%;
+  color: #f2a849;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.title {
+  font-family: "Press Start 2P", cursive;
+  text-align: center;
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  color: #f2a849;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  justify-content: space-around;
+  gap: 2vh;
+}
+
+.buttonContainer button {
+  margin-top: 10px;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 15vh;
+  height: 4.5vh;
+}
+
+.login:hover {
+  background-color: #ffb347;
+  padding: 12px;
+}
+
+.login {
+  background-color: #f2a849;
+  color: #3a0155;
+  border: none;
+}
+
+.cadastro {
+  background-color: transparent;
+  color:#f2a849;
+  border: 2px solid #f2a849;
+}
+
+.cadastro:hover {
+  background-color: #e09c3d;
+  padding: 12px;
+  color: #3a0155;
+  border: none;
+}
+
