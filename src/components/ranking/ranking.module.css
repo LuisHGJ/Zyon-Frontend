@@ -1,0 +1,28 @@
+.rankingContainer {
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.rankingTitle {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.rankingTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+}
+
+.top1 {
+  background-color: #fff8e1;
+  font-weight: bold;
+  color: #d4af37;
+}

@@ -6,6 +6,7 @@ import addUserIcon from "/public/icones/addUserIcon.png";
 import calendarioIcon from "/public/icones/calendarioIcon.png";
 
 import Calendario from "@/components/calendario/calendario";
+import PesquisaUsuario from "../pesquisa/pesquisa";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -22,6 +23,7 @@ export default function Configuracoes({
   const [modalAbertoConfig, setModalAbertoConfig] = useState(false);
   const [modalAbertoSons, setModalAbertoSons] = useState(false);
   const [modalAbertoCalendario, setModalAbertoCalendario] = useState(false);
+  const [modalPesquisa, setModalPesquisa] = useState(false);
 
   const audioRef = useRef(null);
 
@@ -58,6 +60,10 @@ export default function Configuracoes({
       audioRef.current.currentTime = 0;
       audioRef.current = null;
     }
+  }
+
+  const handleIconClick = () => {
+    setModalPesquisa(!modalPesquisa);
   }
 
   return (
@@ -106,6 +112,7 @@ export default function Configuracoes({
           className={styles.btPlay}
           width={50}
           height={50}
+          onClick={handleIconClick}
         />
       </div>
 
@@ -192,6 +199,14 @@ export default function Configuracoes({
             <Calendario/>
 
             <button onClick={() => setModalAbertoCalendario(false)}>Fechar</button>
+          </div>
+        </div>
+      )}
+
+      {modalPesquisa && (
+        <div className={styles.modalFundoPesquisa}>
+          <div className={styles.modalConteudoPesquisa}>
+            <PesquisaUsuario onClose={() => setModalPesquisa(false)} />
           </div>
         </div>
       )}

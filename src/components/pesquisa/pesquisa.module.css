@@ -1,0 +1,77 @@
+.pesquisaContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.pesquisaContainer input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(242, 168, 73, 0.3);
+  background: rgba(0, 0, 0, 0.314);
+  color: white;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.pesquisaContainer input:focus {
+  border-color: #F2A849;
+    background: rgba(0, 0, 0, 0.314);
+  box-shadow: 0 0 6px rgba(242, 168, 73, 0.4);
+}
+
+.pesquisaContainer button {
+  background-color: transparent;
+  border: 2px solid #F2A849;
+  color: #F2A849;
+  padding: 8px 16px;
+  border-radius: 15px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pesquisaContainer button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(242, 168, 73, 0.6);
+}
+
+.resultadoPesquisa {
+  margin-top: 2rem;
+  width: 90%;
+  background-color: rgba(0, 0, 0, 0.314);
+  border-radius: 8px;
+  padding: 0.9rem;
+  text-align: center;
+  font-size: 10px;
+  color: #f2f2f2;
+  border: 1px solid rgba(242, 168, 73, 0.2);
+}
+
+.resultadoPesquisa h3{
+    color: #e5a653;
+}
+
+.botaoFechar {
+  background-color: #F2A849;
+  border: none;
+  color: black;
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 2rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modalConteudoPesquisa button.fechar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(242, 168, 73, 0.6);
+}

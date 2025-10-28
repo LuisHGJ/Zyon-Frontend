@@ -7,6 +7,7 @@ import styles from "./page.module.css";
 import SidebarTasks from "@/components/sidebarTasks/sideBarTasks";
 import TimerBox from "@/components/TimerBox/timerBox";
 import Configuracoes from "@/components/configuracoes/configuracoes";
+import Ranking from "@/components/ranking/ranking";
 
 export default function Home() {
   
@@ -18,29 +19,36 @@ export default function Home() {
 
   return (
     <div className={styles.home}>
+      <div className={styles.mainWrapper}>
+        <div className={styles.leftColumn}>
+          <TimerBox
+            tempoFoco={tempoFoco}
+            tempoPausaCurta={tempoPausaCurta}
+            tempoPausaLonga={tempoPausaLonga}
+            ciclosTotal={ciclosTotal}
+            rodando={rodando}
+            setRodando={setRodando}
+          />      
 
-    <TimerBox
-      tempoFoco={tempoFoco}
-      tempoPausaCurta={tempoPausaCurta}
-      tempoPausaLonga={tempoPausaLonga}
-      ciclosTotal={ciclosTotal}
-      rodando={rodando}
-      setRodando={setRodando}
-    />      
+          <Configuracoes
+            tempoFoco={tempoFoco}
+            setTempoFoco={setTempoFoco}
+            tempoPausaCurta={tempoPausaCurta}
+            setTempoPausaCurta={setTempoPausaCurta}
+            tempoPausaLonga={tempoPausaLonga}
+            setTempoPausaLonga={setTempoPausaLonga}
+            ciclosTotal={ciclosTotal}
+            setCiclosTotal={setCiclosTotal}
+            rodando={rodando}
+          />
 
-    <Configuracoes
-      tempoFoco={tempoFoco}
-      setTempoFoco={setTempoFoco}
-      tempoPausaCurta={tempoPausaCurta}
-      setTempoPausaCurta={setTempoPausaCurta}
-      tempoPausaLonga={tempoPausaLonga}
-      setTempoPausaLonga={setTempoPausaLonga}
-      ciclosTotal={ciclosTotal}
-      setCiclosTotal={setCiclosTotal}
-      rodando={rodando}
-    />
-
-    <SidebarTasks/>
+          <SidebarTasks/>
+          {/* <Ranking/> */}
+        </div>
+        <div className={styles.rightColumn}>
+          <Ranking/>
+        </div>
+      </div>
     </div>
   );
 }
