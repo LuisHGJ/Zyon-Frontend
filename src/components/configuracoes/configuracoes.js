@@ -96,7 +96,7 @@ export default function Configuracoes({
           onClick={() => setModalAbertoCalendario(true)}
         />
 
-        <Link href="/opcaoUser">
+        <Link href="/perfil">
           <Image
             src={userIcon}
             alt="userIcon"

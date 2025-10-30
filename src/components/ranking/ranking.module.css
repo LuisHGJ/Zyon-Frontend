@@ -1,28 +1,60 @@
-.rankingContainer {
-  background: rgba(0,0,0,0.5);
-  color: white;
+.modalFundo {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modalConteudo {
+  background: #3A0155;
   border-radius: 16px;
   padding: 20px;
-  max-width: 600px;
-  margin: 0 auto;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 600px;
+  max-width: 90%;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
 .rankingTitle {
-  text-align: center;
-  color: var(--primary-color);
-  margin-bottom: 20px;
+  color: #F2A849;
   font-weight: bold;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
 }
 
 .rankingTable {
   width: 100%;
   border-collapse: collapse;
-  font-size: 10px;
+  font-size: 12px;
+}
+
+.rankingTable th,
+.rankingTable td {
+  padding: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
 }
 
 .top1 {
   background-color: #fff8e1;
   font-weight: bold;
   color: #d4af37;
+}
+
+.fecharButton {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: #d9534f;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.fecharButton:hover {
+  background-color: #c9302c;
 }
