@@ -15,6 +15,8 @@ export default function SidebarTasks() {
   const [taskSelecionada, setTaskSelecionada] = useState(null);
   const [formEdicao, setFormEdicao] = useState({});
 
+  const userId = Number(localStorage.getItem("id"));
+
   const [novaTask, setNovaTask] = useState({
     nome: "",
     descricao: "",
@@ -22,7 +24,7 @@ export default function SidebarTasks() {
     prioridade: 1,
     cicloTempo: 1,
     dataAgendada: "",
-    usuarioID: 1,
+    usuarioID: userId
   });
 
   useEffect(() => {
@@ -58,6 +60,7 @@ export default function SidebarTasks() {
   
     const taskAjustada = {
       ...novaTask,
+      usuarioID: userId,
       dataAgendada: data.toISOString().split("T")[0], // volta para formato yyyy-mm-dd
     };
   
@@ -71,7 +74,7 @@ export default function SidebarTasks() {
       prioridade: 1,
       cicloTempo: 1,
       dataAgendada: "",
-      usuarioID: 1,
+      usuarioID: userId,
     });
   
     setModalNovaTask(false);

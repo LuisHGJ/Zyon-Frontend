@@ -97,7 +97,7 @@ export default function TimerBox({
   return (
     <div className={styles.main}>
       <div className={styles.timerBox}>
-        <div className={styles.ciclo}><p>Ciclo: {cicloAtual} / {ciclosTotal}</p></div>
+        <div className={styles.ciclo}><p>Ciclo: {cicloAtual}/{ciclosTotal}</p></div>
         <div className={styles.tempo}><p>{formatarTempo(tempoRestante)}</p></div>
         <div className={styles.fase}><p>Fase atual: {fase}</p></div>
 

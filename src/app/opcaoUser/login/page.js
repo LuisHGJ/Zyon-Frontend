@@ -16,27 +16,42 @@ export default function Login() {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         const payload = {
             email: form.email,
             senha: form.senha,
         };
-
+    
         try {
-            const res = await fetch("http://localhost:8080/users/login", {
+            const res = await fetch("http://localhost:8080/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(payload),
             });
+    
             if (!res.ok) {
-                throw new Error("Erro ao fazer login");
+                throw new Error("Credenciais inválidas");
             }
-            router.push("/")
+    
+            const data = await res.json();
+
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("email", data.email);
+            localStorage.setItem("id", data.id);
+
+            // Verifica se o usuário pagou
+            if (data.paid === false) {
+                alert("Pagamento pendente! Complete o checkout.");
+                router.push("/pagamento");
+            } else {
+                router.push("/"); // acesso normal
+            }
+    
         } catch (err) {
             console.error(err);
-            alert("Erro ao fazer login. Tente novamente.");
+            alert("Erro ao fazer login. Verifique suas credenciais.");
         }
     };
 
@@ -55,6 +70,13 @@ export default function Login() {
                     </label>
                     <button type="submit" className={styles.button}>Entrar</button>
                 </form>
+
+                <button
+                    onClick={() => router.push("/opcaoUser/cadastro")}
+                    className={styles.registerButton}
+                >
+                    Cadastrar-se
+                </button>
             </div>
         </div>
     );

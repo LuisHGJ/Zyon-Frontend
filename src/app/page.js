@@ -17,6 +17,14 @@ export default function Home() {
   const [ciclosTotal, setCiclosTotal] = useState(2);
   const [rodando, setRodando] = useState(false);
 
+  console.log("Token:", localStorage.getItem("token"));
+  console.log("ID:", localStorage.getItem("id"));
+
+  const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/opcaoUser/login";
+    }
+
   return (
     <div className={styles.home}>
       <div className={styles.mainWrapper}>

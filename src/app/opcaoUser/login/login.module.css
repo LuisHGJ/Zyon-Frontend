@@ -76,3 +76,24 @@
   background-color: #ffb347;
   padding: 12px;
 }
+
+.registerButton {
+  margin-top: 5px;
+  padding: 8px;
+  background: none;
+  border: 2px solid #f2a849;
+  color: #f2a849;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 0.7rem;
+}
+
+.registerButton:hover {
+  background-color: #f2a849;
+  color: #3a0155;
+  transform: scale(1.05);
+}

@@ -28,7 +28,6 @@ export default function Cadastro() {
       return;
     }
 
-    // Cria o objeto que será enviado para o backend
     const payload = {
       nome: form.nome,
       email: form.email,
@@ -39,7 +38,7 @@ export default function Cadastro() {
     };
 
     try {
-      const res = await fetch("http://localhost:8080/users", {
+      const res = await fetch("http://localhost:8080/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,7 +49,12 @@ export default function Cadastro() {
       if (!res.ok) {
         throw new Error("Erro ao cadastrar usuário");
       }
-      router.push("/"); 
+
+      const data = await res.json();
+
+      localStorage.setItem("userId", data.id);
+
+      router.push("/pagamento");
     } catch (err) {
       console.error(err);
       alert("Erro ao cadastrar usuário. Tente novamente.");
@@ -64,21 +68,47 @@ export default function Cadastro() {
         <form onSubmit={handleSubmit} className={styles.form}>
           <label>
             Nome:
-            <input type="text" name="nome" value={form.nome} onChange={handleChange} required />
+            <input
+              type="text"
+              name="nome"
+              value={form.nome}
+              onChange={handleChange}
+              required
+            />
           </label>
           <label>
             Email:
-            <input type="email" name="email" value={form.email} onChange={handleChange} required />
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
           </label>
           <label>
             Senha:
-            <input type="password" name="senha" value={form.senha} onChange={handleChange} required />
+            <input
+              type="password"
+              name="senha"
+              value={form.senha}
+              onChange={handleChange}
+              required
+            />
           </label>
           <label>
             Confirmar Senha:
-            <input type="password" name="confirmarSenha" value={form.confirmarSenha} onChange={handleChange} required />
+            <input
+              type="password"
+              name="confirmarSenha"
+              value={form.confirmarSenha}
+              onChange={handleChange}
+              required
+            />
           </label>
-          <button type="submit" className={styles.button}>Cadastrar</button>
+          <button type="submit" className={styles.button}>
+            Cadastrar
+          </button>
         </form>
       </div>
     </div>
