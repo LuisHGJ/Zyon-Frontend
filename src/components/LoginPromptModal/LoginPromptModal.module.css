@@ -1,0 +1,89 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7); 
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; 
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal {
+    background: linear-gradient(160deg, rgba(0,0,0,0.65), rgba(0,0,0,0.45));
+    padding: 30px 40px;
+    border-radius: 18px;
+    width: 350px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 0 35px rgba(242, 168, 73, 0.15); 
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transform: scale(0.95);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.overlay.visible .modal {
+    transform: scale(1);
+}
+
+.modal h2 {
+    margin-bottom: 20px;
+    font-size: 1.6rem;
+    color: #F2A849; 
+    text-shadow: 0 0 10px rgba(242, 168, 73, 0.6);
+}
+
+.modal p {
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.button {
+    padding: 12px 25px;
+    margin: 0 10px;
+    background: #F2A849; 
+    color: #1a0029; 
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(242, 168, 73, 0.5);
+    transition: all 0.25s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.button:hover {
+    background: #FFC06C;
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(242, 168, 73, 0.8);
+}
+
+.cancelButton {
+    padding: 12px 25px;
+    margin: 0 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.cancelButton:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
+}

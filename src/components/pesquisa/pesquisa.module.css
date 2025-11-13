@@ -1,10 +1,39 @@
+.modalConteudo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 80vh;
+  overflow: hidden;
+}
+
+.resultadosLista {
+  width: 40vw;
+  max-height: 250px;
+  overflow-y: auto;
+  padding: 0 0.1rem;
+  margin-top: 1px;
+  scrollbar-width: thin; 
+  scrollbar-color: #F2A849 rgba(0, 0, 0, 0.3);
+}
+
+.resultadosLista::-webkit-scrollbar {
+  width: 6px;
+}
+.resultadosLista::-webkit-scrollbar-thumb {
+  background-color: #F2A849;
+  border-radius: 10px;
+}
+.resultadosLista::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
 .pesquisaContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   gap: 0.6rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .pesquisaContainer input {
@@ -21,7 +50,7 @@
 
 .pesquisaContainer input:focus {
   border-color: #F2A849;
-    background: rgba(0, 0, 0, 0.314);
+  background: rgba(0, 0, 0, 0.314);
   box-shadow: 0 0 6px rgba(242, 168, 73, 0.4);
 }
 
@@ -43,19 +72,20 @@
 }
 
 .resultadoPesquisa {
-  margin-top: 2rem;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
   width: 90%;
   background-color: rgba(0, 0, 0, 0.314);
   border-radius: 8px;
-  padding: 0.9rem;
+  padding: 0.1rem;
   text-align: center;
   font-size: 10px;
   color: #f2f2f2;
   border: 1px solid rgba(242, 168, 73, 0.2);
 }
 
-.resultadoPesquisa h3{
-    color: #e5a653;
+.resultadoPesquisa h3 {
+  color: #e5a653;
 }
 
 .botaoFechar {
@@ -71,7 +101,48 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.modalConteudoPesquisa button.fechar:hover {
+.botaoFechar:hover {
   transform: scale(1.05);
   box-shadow: 0 0 10px rgba(242, 168, 73, 0.6);
+}
+
+/* ITENS DE RESULTADO */
+.resultadoItemLink {
+  text-decoration: none;
+  display: block;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+}
+
+.resultadoItem {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #f2f2f2;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  border: 1px solid rgba(242, 168, 73, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-weight: 500;
+}
+
+.resultadoItemLink:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0px 5px rgba(242, 168, 73, 0.3);
+}
+
+.resultadoItemLink:hover .resultadoItem {
+  background-color: rgba(242, 168, 73, 0.1);
+  border-color: #F2A849;
+}
+
+.resultadoItem p {
+  margin: 0;
+}
+
+.resultadoItem p strong {
+  color: #F2A849;
+  font-weight: 700;
 }
