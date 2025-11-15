@@ -2,15 +2,18 @@
 
 import { useState, useEffect } from "react";
 import styles from "./sideBarTasks.module.css";
-import { getTasks, deleteTask, updateTask, createTask } from "@/services/apiTasks";
+// Adicionando 'completeTask' ao import
+import { getTasks, deleteTask, updateTask, createTask, completeTask } from "@/services/apiTasks";
 import menuIcon from "/public/icones/menuIcon.png";
 import Image from "next/image";
 
-import { useAuth } from '@/app/hooks/useAuth';
+// AJUSTE: Importando o NOVO useAuth do Contexto
+import { useAuth } from '@/app/contexts/AuthProfileContext';
 import LoginPromptModal from "../LoginPromptModal/LoginPromptModal";
 
 export default function SidebarTasks() {
-    const { isAuthenticated, isLoading } = useAuth();
+    // AJUSTE: Desestruturando 'userProfile' e a nova função 'updateProfile'
+    const { isAuthenticated, isLoading, userProfile, updateProfile } = useAuth();
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     const [tasks, setTasks] = useState([]);
@@ -31,14 +34,13 @@ export default function SidebarTasks() {
         usuarioID: null,
     });
 
-    // 1. O useEffect agora só busca dados se estiver autenticado e não abre o modal inicialmente.
+    // 1. O useEffect só busca tasks se autenticado
     useEffect(() => {
         if (typeof window !== "undefined" && isAuthenticated) {
             const id = Number(localStorage.getItem("id"));
             setUserId(id);
             setNovaTask(prev => ({ ...prev, usuarioID: id }));
 
-            // Só busca as tasks se o userId for válido (ou seja, se estiver logado)
             getTasks()
                 .then(data => setTasks(data))
                 .catch(console.error);
@@ -54,13 +56,36 @@ export default function SidebarTasks() {
         }
     };
 
-    // 2. NOVA LÓGICA: Esta função checa o login ANTES de abrir a sidebar
+    // NOVA FUNÇÃO: Lógica para concluir a task e receber XP
+    const handleConcluirTask = async (id) => {
+        const currentTask = tasks.find(t => t.id === id);
+        if (currentTask && currentTask.concluido) return;
+
+        try {
+            // 1. Chama a API e recebe o objeto User atualizado (XP, Nível, etc.)
+            const updatedUser = await completeTask(id);
+
+            // 2. Marca a task como concluída localmente
+            setTasks(prev => prev.map(t => 
+                t.id === id ? { ...t, concluido: true } : t
+            ));
+            
+            // 3. Atualiza o estado global do usuário via Contexto
+            updateProfile(updatedUser); 
+            console.log("Task concluída! Perfil do Usuário atualizado:", updatedUser);
+
+        } catch (error) {
+            console.error("Erro na conclusão da task:", error);
+            // Substituímos alert() por uma mensagem mais segura (você pode trocar por um modal)
+            alert(`Erro ao concluir a task: ${error.message}`); 
+        }
+    };
+
+    // 2. LÓGICA: Checa o login ANTES de abrir a sidebar
     const handleToggleSidebar = () => {
         if (!isAuthenticated) {
-            // Se não estiver logado, abre o modal, mas não abre a sidebar
             setIsLoginModalOpen(true);
         } else {
-            // Se estiver logado, apenas alterna o estado da sidebar
             setSidebarAberta(!sidebarAberta);
         }
     };
@@ -116,28 +141,47 @@ export default function SidebarTasks() {
 
     return (
         <div className={styles.main}>
-            {/* O botão do menu está sempre visível e usa a nova lógica */}
             <Image
                 src={menuIcon}
                 alt="menuIcon"
                 className={styles.toggleButton}
                 width={30}
                 height={30}
-                onClick={handleToggleSidebar} // Usa a nova função
+                onClick={handleToggleSidebar}
             />
 
             <div className={`${styles.sidebar} ${sidebarAberta ? styles.aberta : ""}`}>
                 <h2 className={styles.title}>Tasks</h2>
-                {/* O botão de Criar Task é protegido */}
+                
+                {/* NOVO: Exibição de Nível e XP do usuário */}
+                {userProfile ? (
+                    <div className={styles.profileSummary}>
+                        <p>Nível: <strong>{userProfile.nivel}</strong> | XP: <strong>{userProfile.xp}</strong></p>
+                    </div>
+                ) : (
+                    !isLoading && isAuthenticated && <p className={styles.loadingText}>A carregar perfil...</p>
+                )}
+
                 <button onClick={() => handleProtectedAction(() => setModalNovaTask(true))}>Criar Task</button>
 
                 <ul className={styles.taskList}>
-                    {/* A lista de tasks só será populada se isAuthenticated for true */}
                     {tasks.map(task => (
-                        <li key={task.id}>
-                            <span>{task.nome} - {task.dataAgendada}</span>
+                        // Adicionando classe 'concluida' para estilizar (ver CSS)
+                        <li key={task.id} className={task.concluido ? styles.concluida : ''}>
+                            <span className={task.concluido ? styles.concluidoText : ''}>
+                                {task.nome} - {task.dataAgendada}
+                            </span>
                             <div className={styles.botoes}>
-                                {/* Botões de ação são protegidos */}
+                                {/* NOVO BOTÃO: Só aparece se a task NÃO estiver concluída */}
+                                {!task.concluido && (
+                                    <button 
+                                        className={styles.concluirButton}
+                                        onClick={() => handleProtectedAction(handleConcluirTask, task.id)}
+                                    >
+                                        Concluir (+XP)
+                                    </button>
+                                )}
+                                
                                 <button onClick={() => handleProtectedAction(handleEditClick, task)}>Editar</button>
                                 <button onClick={() => handleProtectedAction(handleDelete, task.id)}>Excluir</button>
                             </div>
@@ -146,7 +190,7 @@ export default function SidebarTasks() {
                 </ul>
             </div>
 
-            {/* Modais de Task (sempre protegidos por handleProtectedAction nos botões) */}
+            {/* Modais de Task */}
             {modalNovaTask && (
                 <div className={styles.modalFundo}>
                     <div className={styles.modalConteudo}>
@@ -190,7 +234,7 @@ export default function SidebarTasks() {
                     </div>
                 </div>
             )}
-            {/* O Modal de Aviso de Login é sempre renderizado, mas fica invisível até ser ativado */}
+            
             <LoginPromptModal 
                 isOpen={isLoginModalOpen} 
                 onClose={() => setIsLoginModalOpen(false)} 

@@ -1,7 +1,8 @@
 .modalFundo {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,52 +10,101 @@
 }
 
 .modalConteudo {
-  background: #3A0155;
+  background: linear-gradient(145deg, #3A0155 0%, #200130 100%);
   border-radius: 16px;
-  padding: 20px;
-  width: 600px;
+  padding: 24px 28px;
+  width: 480px;
   max-width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
   color: white;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   text-align: center;
+  animation: aparecerModal 0.25s ease-out;
+}
+
+@keyframes aparecerModal {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .rankingTitle {
   color: #F2A849;
-  font-weight: bold;
+  font-weight: 600;
   margin-bottom: 20px;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+  text-align: center;
+  text-shadow: 0 0 5px rgba(242, 168, 73, 0.5);
 }
 
 .rankingTable {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
 }
 
 .rankingTable th,
 .rankingTable td {
-  padding: 8px;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding: 10px 8px;
+  border-bottom: 1px solid #644186; 
+  text-align: center;
+  color: white;
+}
+
+.rankingTable th {
+  background-color:  #50157A;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.rankingTable td:first-child {
+  text-align: center; 
+  font-weight: 600;
 }
 
 .top1 {
-  background-color: #fff8e1;
+  background-color: #F2A849;
   font-weight: bold;
-  color: #d4af37;
+  color: #3A0155;
+}
+
+.currentUser {
+    background-color: #644186;
+    font-weight: 500;
+    color: white;
+}
+
+.rankingTable tbody tr {
+    background-color: #3A0155;
+}
+.rankingTable tbody tr:nth-child(odd):not(.top1):not(.currentUser) {
+    background-color: #200130;
 }
 
 .fecharButton {
   margin-top: 20px;
-  padding: 8px 16px;
-  background-color: #d9534f;
+  padding: 10px 20px;
+  background-color: #F2A849;
   border: none;
-  border-radius: 6px;
-  color: white;
+  border-radius: 8px;
+  color: #3A0155;
   cursor: pointer;
   font-weight: bold;
+  font-size: 1rem;
+  transition: all 0.2s ease;
 }
 
 .fecharButton:hover {
-  background-color: #c9302c;
+  background-color: #E0993B;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

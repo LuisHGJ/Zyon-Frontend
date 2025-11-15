@@ -5,6 +5,29 @@ function getAuthHeader() {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
+export async function completeTask(taskId) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        throw new Error('Usuário não autenticado.');
+    }
+
+    const response = await fetch(`${API_URL}/${taskId}/complete`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        const errorDetail = await response.json().catch(() => ({ message: 'Erro ao conectar com o servidor.' }));
+        throw new Error(`Falha na conclusão da Task: ${errorDetail.message || response.statusText}`);
+    }
+
+    const updatedUser = await response.json(); 
+    return updatedUser;
+}
+
 export async function getTasks() {
     const res = await fetch(API_URL, {
       headers: {

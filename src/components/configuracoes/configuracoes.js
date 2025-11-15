@@ -4,9 +4,11 @@ import somIcon from "/public/icones/somIcon.png";
 import userIcon from "/public/icones/userIcon.png";
 import addUserIcon from "/public/icones/addUserIcon.png";
 import calendarioIcon from "/public/icones/calendarioIcon.png";
+import rankingIcon from "/public/icones/rankingIcon.png";
 
 import Calendario from "@/components/calendario/calendario";
 import PesquisaUsuario from "../pesquisa/pesquisa";
+import Ranking from "../ranking/ranking";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -24,6 +26,7 @@ export default function Configuracoes({
   const [modalAbertoSons, setModalAbertoSons] = useState(false);
   const [modalAbertoCalendario, setModalAbertoCalendario] = useState(false);
   const [modalPesquisa, setModalPesquisa] = useState(false);
+  const [modalRanking, setModalRanking] = useState(false);
 
   const audioRef = useRef(null);
 
@@ -114,6 +117,17 @@ export default function Configuracoes({
           height={50}
           onClick={handleIconClick}
         />
+
+        <Image
+          src={rankingIcon}
+          alt="rankingIcon"
+          className={styles.btPlay}
+          width={50}
+          height={50}
+          onClick={() => setModalRanking(true)}
+        />
+
+
       </div>
 
       {modalAbertoConfig && (
@@ -209,6 +223,11 @@ export default function Configuracoes({
             <PesquisaUsuario onClose={() => setModalPesquisa(false)} />
           </div>
         </div>
+      )}
+
+      {modalRanking && (
+        <Ranking aberto={modalRanking}
+          fecharModal={() => setModalRanking(false)}/>
       )}
     </div>
   );

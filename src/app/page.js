@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
+import { AuthProfileProvider } from '@/app/contexts/AuthProfileContext';
 
 import styles from "./page.module.css";
 
@@ -30,37 +31,39 @@ export default function Home() {
   // }, []);
 
   return (
-    <div className={styles.home}>
-      <div className={styles.mainWrapper}>
-        <div className={styles.leftColumn}>
-          <TimerBox
-            tempoFoco={tempoFoco}
-            tempoPausaCurta={tempoPausaCurta}
-            tempoPausaLonga={tempoPausaLonga}
-            ciclosTotal={ciclosTotal}
-            rodando={rodando}
-            setRodando={setRodando}
-          />      
+    <AuthProfileProvider>
+      <div className={styles.home}>
+        <div className={styles.mainWrapper}>
+          <div className={styles.leftColumn}>
+            <TimerBox
+              tempoFoco={tempoFoco}
+              tempoPausaCurta={tempoPausaCurta}
+              tempoPausaLonga={tempoPausaLonga}
+              ciclosTotal={ciclosTotal}
+              rodando={rodando}
+              setRodando={setRodando}
+            />      
 
-          <Configuracoes
-            tempoFoco={tempoFoco}
-            setTempoFoco={setTempoFoco}
-            tempoPausaCurta={tempoPausaCurta}
-            setTempoPausaCurta={setTempoPausaCurta}
-            tempoPausaLonga={tempoPausaLonga}
-            setTempoPausaLonga={setTempoPausaLonga}
-            ciclosTotal={ciclosTotal}
-            setCiclosTotal={setCiclosTotal}
-            rodando={rodando}
-          />
+            <Configuracoes
+              tempoFoco={tempoFoco}
+              setTempoFoco={setTempoFoco}
+              tempoPausaCurta={tempoPausaCurta}
+              setTempoPausaCurta={setTempoPausaCurta}
+              tempoPausaLonga={tempoPausaLonga}
+              setTempoPausaLonga={setTempoPausaLonga}
+              ciclosTotal={ciclosTotal}
+              setCiclosTotal={setCiclosTotal}
+              rodando={rodando}
+            />
 
-          <SidebarTasks/>
-          {/* <Ranking/> */}
-        </div>
-        <div className={styles.rightColumn}>
-          <Ranking/>
+            <SidebarTasks/>
+            {/* <Ranking/> */}
+          </div>
+          <div className={styles.rightColumn}>
+            <Ranking/>
+          </div>
         </div>
       </div>
-    </div>
+    </AuthProfileProvider>
   );
 }
