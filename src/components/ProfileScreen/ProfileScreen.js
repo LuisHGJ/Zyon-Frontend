@@ -1,107 +1,106 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import styles from "./ProfileScreen.module.css";
+import Link from "next/link";
+import Image from "next/image";
 
-const useAuth = () => {
-    const isAuthenticated = typeof window !== 'undefined' && localStorage.getItem("token") != null;
-    const isLoading = false; 
-    return { isAuthenticated, isLoading };
-};
+import { useAuth } from '@/app/hooks/useAuth';
+import LoginPromptModal from "@/components/LoginPromptModal/LoginPromptModal";
 
-const LoginPromptModal = ({ isOpen, onClose }) => {
-    if (!isOpen) return null;
-
-    return (
-        <div className={styles.modalOverlay} onClick={onClose}>
-            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                <h3 className={styles.modalTitle}>Autenticação Necessária</h3>
-                <p className={styles.modalText}>Por favor, faça login para ver este perfil.</p>
-                <button className={styles.modalButton} onClick={onClose}>
-                    Entendido
-                </button>
-            </div>
-        </div>
-    );
-};
-// -----------------------------------------------------------
-
-export default function PerfilScreen({ targetId }) {
-    const { isAuthenticated, isLoading } = useAuth();
+export default function PerfilScreen({ targetId }) { 
+    const { isAuthenticated, isLoading } = useAuth(); 
     const [user, setUser] = useState(null);
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-    const [selfUserId, setSelfUserId] = useState(null);
-
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false); 
+    const [selfUserId, setSelfUserId] = useState(null); 
+    
     useEffect(() => {
-        if (isAuthenticated && typeof window !== 'undefined') {
+        if (isAuthenticated) {
             setSelfUserId(localStorage.getItem("id"));
         }
     }, [isAuthenticated]);
 
-    const fetchUser = useCallback(async (userIdToFetch) => {
-        const token = typeof window !== 'undefined' ? localStorage.getItem("token") : null;
-        if (!userIdToFetch || !token) return;
-
-        try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${userIdToFetch}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            });
-
-            if (!res.ok) {
-                if (userIdToFetch === selfUserId) {
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("id");
-                    setIsLoginModalOpen(true);
-                }
-                throw new Error("Sessão expirada ou usuário não encontrado.");
-            }
-
-            const data = await res.json();
-            console.log(data); 
-            console.log("estacaoImagem recebida:", data.estacaoImagem);
-            setUser(data);
-        } catch (err) {
-            console.error("Erro ao buscar usuário:", err);
-            setUser(null);
-        }
-    }, [selfUserId]);
-
     useEffect(() => {
-        if (isLoading) return;
+        if (isLoading || (isAuthenticated && !targetId && !selfUserId)) {
+            return;
+        }
 
         if (!isAuthenticated) {
             setIsLoginModalOpen(true);
             return;
         }
 
-        const userIdToFetch = targetId || selfUserId;
-        if (userIdToFetch) fetchUser(userIdToFetch);
+        const fetchUser = async () => {
+            const userIdToFetch = targetId || selfUserId;
+            const token = localStorage.getItem("token");
 
-    }, [isAuthenticated, isLoading, targetId, selfUserId, fetchUser]);
+            if (!userIdToFetch || !token) {
+                 return; 
+            }
+            
+            try {
+                const res = await fetch(`http://localhost:8080/users/${userIdToFetch}`, {
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                if (!res.ok) {
+                    if (userIdToFetch === selfUserId) {
+                        localStorage.removeItem("token");
+                        localStorage.removeItem("id");
+                        setIsLoginModalOpen(true);
+                    }
+                    throw new Error("Sessão expirada ou usuário não encontrado.");
+                }
+
+                const data = await res.json();
+                setUser(data);
+            } catch (err) {
+                console.error(err);
+                setUser(null);
+            }
+        };
+
+        if (isAuthenticated && (targetId || selfUserId)) {
+            fetchUser();
+        }
+        
+    }, [isAuthenticated, isLoading, targetId, selfUserId]); 
 
     if (isLoading || (isAuthenticated && !user && !targetId && !selfUserId)) {
         return <p className={styles.loading}>Carregando perfil...</p>;
     }
 
     if (!isAuthenticated) {
-        return <LoginPromptModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />;
+        return (
+            <LoginPromptModal 
+                isOpen={isLoginModalOpen} 
+                onClose={() => setIsLoginModalOpen(false)} 
+            />
+        );
     }
-
+    
     if (!user) {
         return <p className={styles.loading}>Usuário não encontrado ou erro de carregamento.</p>;
     }
 
-    const estacaoImageName = user.estacaoImagem;
-    const estacaoPath = `/estacoes/${estacaoImageName}`;
+    const niveis = {
+        1: "/estacoes/nivel1.gif",
+        2: "/estacoes/nivel2.gif",
+        3: "/estacoes/nivel3.gif",
+    };
+
+    const estacaoNivel = niveis[user.nivel] || "/estacoes/default.gif";
 
     return (
         <div className={styles.page}>
             <header className={styles.header}>
                 <h1>Perfil do Usuário</h1>
-                <a href="/" className={styles.voltarButton}>Voltar</a>
+                <Link className={styles.voltarButton} href="/">
+                    Voltar
+                </Link>
             </header>
 
             <main className={styles.main}>
@@ -114,18 +113,19 @@ export default function PerfilScreen({ targetId }) {
 
                 <div className={styles.extraSpace}></div>
 
-                <img
-                    src={estacaoPath}
-                    width={335}
-                    height={335}
-                    alt={`Estação do ${user.titulo}`}
-                    className={styles.estacao}
-                />
+                <div>
+                    <Image 
+                        src={estacaoNivel}
+                        width={335}
+                        height={335}
+                        alt="Estação espacial"
+                        className={styles.estacao}
+                    />
+                </div>
             </main>
-
             <LoginPromptModal 
-                isOpen={isLoginModalOpen}
-                onClose={() => setIsLoginModalOpen(false)}
+                isOpen={isLoginModalOpen} 
+                onClose={() => setIsLoginModalOpen(false)} 
             />
         </div>
     );
