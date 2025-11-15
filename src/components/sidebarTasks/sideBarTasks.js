@@ -27,7 +27,7 @@ export default function SidebarTasks() {
     const [novaTask, setNovaTask] = useState({
         nome: "",
         descricao: "",
-        dificuldade: 1,
+        dificuldade: "facil",
         prioridade: 1,
         cicloTempo: 1,
         dataAgendada: "",
@@ -47,6 +47,15 @@ export default function SidebarTasks() {
         }
     }, [isAuthenticated]);
 
+    const handleReloadTasks = async () => {
+        try {
+            const data = await getTasks();
+            setTasks(data);
+        } catch (err) {
+            console.error("Erro ao recarregar tasks:", err);
+        }
+    };   
+
     // Função auxiliar que protege todas as ações
     const handleProtectedAction = (actionHandler, ...args) => {
         if (!isAuthenticated) {
@@ -62,15 +71,12 @@ export default function SidebarTasks() {
         if (currentTask && currentTask.concluido) return;
 
         try {
-            // 1. Chama a API e recebe o objeto User atualizado (XP, Nível, etc.)
             const updatedUser = await completeTask(id);
 
-            // 2. Marca a task como concluída localmente
             setTasks(prev => prev.map(t => 
                 t.id === id ? { ...t, concluido: true } : t
             ));
             
-            // 3. Atualiza o estado global do usuário via Contexto
             updateProfile(updatedUser); 
             console.log("Task concluída! Perfil do Usuário atualizado:", updatedUser);
 
@@ -129,7 +135,7 @@ export default function SidebarTasks() {
         setNovaTask({
             nome: "",
             descricao: "",
-            dificuldade: 1,
+            dificuldade: "facil",
             prioridade: 1,
             cicloTempo: 1,
             dataAgendada: "",
@@ -152,11 +158,15 @@ export default function SidebarTasks() {
 
             <div className={`${styles.sidebar} ${sidebarAberta ? styles.aberta : ""}`}>
                 <h2 className={styles.title}>Tasks</h2>
-                
-                {/* NOVO: Exibição de Nível e XP do usuário */}
+
                 {userProfile ? (
                     <div className={styles.profileSummary}>
-                        <p>Nível: <strong>{userProfile.nivel}</strong> | XP: <strong>{userProfile.xp}</strong></p>
+                        
+                        <p>
+                        <button className={styles.botaoReload} onClick={() => handleProtectedAction(handleReloadTasks)}> Reload </button>
+                            Nível: <strong>{userProfile.nivel}</strong> | 
+                            XP: <strong>{userProfile.xp}</strong>
+                        </p>
                     </div>
                 ) : (
                     !isLoading && isAuthenticated && <p className={styles.loadingText}>A carregar perfil...</p>
@@ -172,13 +182,12 @@ export default function SidebarTasks() {
                                 {task.nome} - {task.dataAgendada}
                             </span>
                             <div className={styles.botoes}>
-                                {/* NOVO BOTÃO: Só aparece se a task NÃO estiver concluída */}
                                 {!task.concluido && (
                                     <button 
                                         className={styles.concluirButton}
                                         onClick={() => handleProtectedAction(handleConcluirTask, task.id)}
                                     >
-                                        Concluir (+XP)
+                                        Concluir
                                     </button>
                                 )}
                                 
@@ -204,6 +213,19 @@ export default function SidebarTasks() {
                             <textarea value={novaTask.descricao} onChange={e => setNovaTask(prev => ({ ...prev, descricao: e.target.value }))} />
                         </label>
                         <label>
+                            Dificuldade:
+                            <select
+                                value={novaTask.dificuldade}
+                                onChange={(e) =>
+                                    setNovaTask(prev => ({ ...prev, dificuldade: e.target.value }))
+                                }
+                            >
+                                <option value="facil">Fácil</option>
+                                <option value="media">Média</option>
+                                <option value="dificil">Difícil</option>
+                            </select>
+                        </label>
+                        <label>
                             Data:
                             <input type="date" value={novaTask.dataAgendada} onChange={e => setNovaTask(prev => ({ ...prev, dataAgendada: e.target.value }))} required />
                         </label>
@@ -224,6 +246,19 @@ export default function SidebarTasks() {
                         <label>
                             Descrição:
                             <textarea value={formEdicao.descricao} onChange={e => setFormEdicao(prev => ({ ...prev, descricao: e.target.value }))} />
+                        </label>
+                        <label>
+                            Dificuldade:
+                            <select
+                                value={formEdicao.dificuldade}
+                                onChange={(e) =>
+                                    setFormEdicao(prev => ({ ...prev, dificuldade: e.target.value }))
+                                }
+                            >
+                                <option value="FÁCIL">Fácil</option>
+                                <option value="MÉDIA">Média</option>
+                                <option value="DIFÍCIL">Difícil</option>
+                            </select>
                         </label>
                         <label>
                             Data:

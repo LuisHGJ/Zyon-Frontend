@@ -23,7 +23,7 @@ export default function Calendario() {
     const [novaTask, setNovaTask] = useState({
         nome: "",
         descricao: "",
-        dificuldade: 1,
+        dificuldade: "facil",
         prioridade: 1,
         cicloTempo: 1,
         dataAgendada: "",
@@ -85,7 +85,7 @@ export default function Calendario() {
 
     const handleEdit = () => {
         if (!taskSelecionada) return;
-        setFormEdicao({ ...taskSelecionada });
+        setFormEdicao({ ...taskSelecionada, dificuldade: String(taskSelecionada.dificuldade)});
         setModalEdicao(true);
     };
 
@@ -116,8 +116,7 @@ export default function Calendario() {
             setNovaTask({
                 nome: "",
                 descricao: "",
-                dificuldade: 1,
-                prioridade: 1,
+                dificuldade: "facil",
                 cicloTempo: 1,
                 dataAgendada: "",
                 usuarioID: Number(localStorage.getItem('id') || 1),
@@ -155,8 +154,8 @@ export default function Calendario() {
                         <h2>{taskSelecionada.nome}</h2>
                         <p>Descrição: {taskSelecionada.descricao}</p>
                         <p>Dificuldade: {taskSelecionada.dificuldade}</p>
-                        <p>Prioridade: {taskSelecionada.prioridade}</p>
-                        <p>Recompensa XP: {taskSelecionada.recompensa_xp || taskSelecionada.recompensaXP}</p>
+                        {/* <p>Prioridade: {taskSelecionada.prioridade}</p> */}
+                        {/* <p>Recompensa XP: {taskSelecionada.recompensa_xp || taskSelecionada.recompensaXP}</p> */}
                         <p>Data: {taskSelecionada.dataAgendada}</p>
                         <div className={styles.botoesModal}>
                             <button onClick={() => handleProtectedAction(handleEdit)}>Editar</button>
@@ -188,15 +187,17 @@ export default function Calendario() {
                         </label>
                         <label>
                             Dificuldade *:
-                            <input
-                                type="number"
-                                min="1"
-                                max="5"
+                            <select
                                 value={formEdicao.dificuldade}
                                 onChange={(e) => setFormEdicao(prev => ({ ...prev, dificuldade: e.target.value }))}
-                            />
+                            >
+                                <option value="facil">Fácil</option>
+                                <option value="media">Média</option>
+                                <option value="dificil">Difícil</option>
+                            </select>
                         </label>
-                        <label>
+
+                        {/* <label>
                             Prioridade:
                             <input
                                 type="number"
@@ -205,7 +206,7 @@ export default function Calendario() {
                                 value={formEdicao.prioridade}
                                 onChange={(e) => setFormEdicao(prev => ({ ...prev, prioridade: e.target.value }))}
                             />
-                        </label>
+                        </label> */}
                         <label>
                             Data *:
                             <input
@@ -243,15 +244,17 @@ export default function Calendario() {
                         </label>
                         <label>
                             Dificuldade *:
-                            <input
-                                type="number"
-                                min="1"
-                                max="5"
+                            <select
                                 value={novaTask.dificuldade}
                                 onChange={e => setNovaTask(prev => ({ ...prev, dificuldade: e.target.value }))}
-                            />
+                            >
+                                <option value="facil">Fácil</option>
+                                <option value="media">Média</option>
+                                <option value="dificil">Difícil</option>
+                            </select>
                         </label>
-                        <label>
+
+                        {/* <label>
                             Prioridade:
                             <input
                                 type="number"
@@ -260,7 +263,7 @@ export default function Calendario() {
                                 value={novaTask.prioridade}
                                 onChange={e => setNovaTask(prev => ({ ...prev, prioridade: e.target.value }))}
                             />
-                        </label>
+                        </label> */}
                         <label>
                             Ciclo Tempo:
                             <input

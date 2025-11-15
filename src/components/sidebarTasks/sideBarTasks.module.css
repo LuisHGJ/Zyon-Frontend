@@ -28,7 +28,7 @@
 .toggleButton {
   position: fixed;
   top: 18px;
-  right: 12px;
+  right: 15px;
   z-index: 1100;
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -169,7 +169,7 @@
 
 .modalConteudo input,
 .modalConteudo textarea {
-  width: 100%;
+  width: 90%;
   padding: 8px 10px;
   margin-top: 5px;
   border: 2px solid rgba(255,255,255,0.3);
@@ -208,4 +208,50 @@
 .modalConteudo button:hover {
   transform: scale(1.05);
   background-color: #ffd066;
+}
+
+.modalConteudo select {
+  width: 98%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-top: 6px;
+  font-size: 0.9rem;
+  font-family: "Segoe UI", sans-serif;
+  background-color: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.3);
+  color: #ffffff;
+  transition: 0.2s;
+}
+
+.modalConteudo select:focus {
+  outline: none;
+  border-color: #F2A849;
+  box-shadow: 0 0 6px rgba(242, 168, 73, 0.4);
+  color: black;
+}
+
+.botaoReload {
+  display: inline-block;
+  width: 100px !important;
+  height: 20px;
+  font-size: 14px !important;
+  padding: 0px !important;
+  margin-right: 10px !important;
+  margin-bottom: 4px !important;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: inherit;
+  cursor: pointer;
+  margin-right: 8px;
+  vertical-align: middle;
+  transition: background-color .12s, transform .08s;
+}
+
+.botaoReload:hover {
+  background: rgba(255,255,255,0.06);
+  transform: translateY(-1px);
+}
+
+.botaoReload:active {
+  transform: translateY(0);
 }
