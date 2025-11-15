@@ -12,7 +12,7 @@ export default function RankingModal({ aberto, fecharModal }) {
 
     async function fetchRanking() {
       try {
-        const res = await fetch("http://localhost:8080/users/ranking");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/ranking`);
         if (!res.ok) throw new Error("Erro ao buscar ranking");
         const data = await res.json();
         setRanking(data);

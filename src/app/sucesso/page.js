@@ -11,7 +11,7 @@ export default function Sucesso() {
 
  useEffect(() => {
   if (userId) {
-   fetch(`http://localhost:8080/users/markPaid/${userId}`, {
+   fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/markPaid/${userId}`, {
     method: "POST",
    })
    .then(res => res.json())

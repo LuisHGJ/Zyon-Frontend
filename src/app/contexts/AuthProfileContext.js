@@ -1,7 +1,8 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect } from 'react';
-const USER_PROFILE_API = 'http://localhost:8080/users/'; 
+// const USER_PROFILE_API = 'http://localhost:8080/users/'; 
+const USER_PROFILE_API = 'http://137.131.224.125:8080/users/'; 
 
 const AuthProfileContext = createContext(null);
 

@@ -43,7 +43,7 @@ export default function PerfilScreen({ targetId }) {
         if (!userIdToFetch || !token) return;
 
         try {
-            const res = await fetch(`http://localhost:8080/users/${userIdToFetch}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${userIdToFetch}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",

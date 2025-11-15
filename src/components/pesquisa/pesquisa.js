@@ -49,7 +49,7 @@ export default function PesquisaUsuario(props) {
 
         try {
             // Requisição real para o endpoint de busca parcial que implementamos no backend
-            const response = await fetch(`http://localhost:8080/users/search?nome=${termo}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/search?nome=${termo}`);
 
             if (response.status === 404) {
                 setResultados([]);

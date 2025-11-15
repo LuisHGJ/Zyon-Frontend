@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/users";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/users`;
 
 const token = localStorage.getItem("token");
 
